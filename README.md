@@ -6,5 +6,5 @@ Senior project repo.
 This repository will hold most to all of the code that is used for this project.
 
 ### Task List:
-- Create a Smart Plug
+- Create a Smart Plug (Done)
 - Create a hub that is able to communicate with the smaller IOT devices
