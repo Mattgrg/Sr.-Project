@@ -5,14 +5,18 @@
             Home screen
         </title>
          
-        <!-- script to create new button -->
+        
         <script>
-            devices = [];
-            num_devices = 0;
+            decives = [];
+            function all(){
+                start()
 
-            function status_in() {
-                
-                devices.push({ name: 'abc', status: 'on' ,});
+            }
+
+
+            function start(){
+                window.setInterval(status_in, 5000);
+                devices.push({ name: 'abc', status: 'on' });
                 devices.push({ name: 'ghwi', status: 'off' });
                 devices.push({ name: 'gdhi', status: 'off' });
                 devices.push({ name: 'weghi', status: 'off' });
@@ -22,33 +26,52 @@
                 devices.push({ name: 'gsdhid', status: 'on' });
                 devices.push({ name: 'ghisd', status: 'off' });
                 devices.push({ name: 'ghisd', status: 'off' });
-                console.log("Loaded Devices (Smart Plug)")
                 for(i = 0; i < devices.length; i++){
-                    
-                    console.log("Device Name: ",devices[i].name);
-                    console.log("Device State;",devices[i].status);
-                    console.log(num_devices);
-                    if (num_devices < i || num_devices+1 < i){
+
+                    if (10000 > devices.length){
                         var myDiv = document.getElementById("GFG");
-                 
-                        // creating button element
+
+    
                         var button = document.createElement('BUTTON');
-               
-                        // creating text to be
-                        //displayed on button
+
+
                         var text = document.createTextNode(devices[i].name);
-               
-                        // appending text to button
+
+    
                         button.appendChild(text);
                         button.id = i;
-                        button.onclick = "button_update(this.id)"
-                        // appending button to div
+                        button.addEventListener("click", function() {
+                            if(this.status == "off"){
+                                his.status = "on"
+                            }
+                            else{
+                                this.status = "off"
+                            }
+                            console.log("Device Name: ",this.name);
+                            console.log("Device State;",this.status);
+                            
+                            
+                        });
+    
                         myDiv.appendChild(button);
                         num_devices += 1;
                     }
-                }
+                }           
             }
-            function add_device(){
+
+            
+            function status_in() {
+                for(i = 0; i < devices.length; i++){
+                    console.log("Loaded Devices (Smart Plugs)")
+                    console.log("Device", i, "Name: ",devices[i].name);
+                    console.log("Device", i, "Stats: ",devices[i].status);
+                    var ard= document.getElementById("freeform").value;
+                    console.log("Ardunio Code;",ard);
+                }
+                
+            }
+
+            function add_device(devices){
                 var name = document.getElementById("freeform2").value
 
                 devices.push({name, status: 'off'})
@@ -73,7 +96,7 @@
         </script>
     </head>
      
-    <body style = "text-align: center;" onload="status_in()">
+    <body style = "text-align: center;" onload=start()>
      
         <h1 style = "color:green;">
             PROJECTTEAM 26
