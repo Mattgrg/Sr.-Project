@@ -7,15 +7,10 @@
          
         
         <script>
-            decives = [];
-            function all(){
-                start()
-
-            }
-
-
+            devices = [];
+            window.setInterval(status_in, 1000)
+            num_devices = 0;
             function start(){
-                window.setInterval(status_in, 5000);
                 devices.push({ name: 'abc', status: 'on' });
                 devices.push({ name: 'ghwi', status: 'off' });
                 devices.push({ name: 'gdhi', status: 'off' });
@@ -71,7 +66,7 @@
                 
             }
 
-            function add_device(devices){
+            function add_device(){
                 var name = document.getElementById("freeform2").value
 
                 devices.push({name, status: 'off'})
@@ -79,7 +74,7 @@
                 var myDiv = document.getElementById("GFG");
                 var button = document.createElement('BUTTON');
        
-                var text = document.createTextNode(devices[num_devices].name);
+                var text = document.createTextNode(devices[num_devices-1].name);
 
                 button.appendChild(text);
                 button.id = num_devices;
