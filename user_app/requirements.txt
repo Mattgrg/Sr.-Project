@@ -1,4 +1,7 @@
 flask
 requests
 pybluez2
-
+paho-mqtt
+Flask-MQTT
+APScheduler
+Flask-APScheduler
