@@ -1,9 +1,126 @@
 <!DOCTYPE html>
 <html>
-<body>
+    <head>
+        <title>
+            Home screen
+        </title>
+         
+        
+        <script>
+            devices = [];
+            window.setInterval(status_in, 1000)
+            num_devices = 0;
+            function start(){
+                devices.push({ name: 'abc', status: 'on' });
+                devices.push({ name: 'ghwi', status: 'off' });
+                devices.push({ name: 'gdhi', status: 'off' });
+                devices.push({ name: 'weghi', status: 'off' });
+                devices.push({ name: 'ghisd', status: 'off' });
+                devices.push({ name: 'ghsdis', status: 'on' });
+                devices.push({ name: 'ghi', status: 'off' });
+                devices.push({ name: 'gsdhid', status: 'on' });
+                devices.push({ name: 'ghisd', status: 'off' });
+                devices.push({ name: 'ghisd', status: 'off' });
+                for(i = 0; i < devices.length; i++){
 
-<h1>Control Light</h1>
-<input id="light" type="checkbox">LED
+                    if (10000 > devices.length){
+                        var myDiv = document.getElementById("GFG");
 
-</body>
-</html>
+    
+                        var button = document.createElement('BUTTON');
+
+
+                        var text = document.createTextNode(devices[i].name);
+
+    
+                        button.appendChild(text);
+                        button.id = i;
+                        button.addEventListener("click", function() {
+                            if(this.status == "off"){
+                                his.status = "on"
+                            }
+                            else{
+                                this.status = "off"
+                            }
+                            console.log("Device Name: ",this.name);
+                            console.log("Device State;",this.status);
+                            
+                            
+                        });
+    
+                        myDiv.appendChild(button);
+                        num_devices += 1;
+                    }
+                }           
+            }
+
+            
+            function status_in() {
+                for(i = 0; i < devices.length; i++){
+                    console.log("Loaded Devices (Smart Plugs)")
+                    console.log("Device", i, "Name: ",devices[i].name);
+                    console.log("Device", i, "Stats: ",devices[i].status);
+                    var ard= document.getElementById("freeform").value;
+                    console.log("Ardunio Code;",ard);
+                }
+                
+            }
+
+            function add_device(){
+                var name = document.getElementById("freeform2").value
+
+                devices.push({name, status: 'off'})
+                num_devices += 1;
+                var myDiv = document.getElementById("GFG");
+                var button = document.createElement('BUTTON');
+       
+                var text = document.createTextNode(devices[num_devices-1].name);
+
+                button.appendChild(text);
+                button.id = num_devices;
+                button.onclick = "button_update(this.id)"
+
+                myDiv.appendChild(button);
+                for(i = 0; i < devices.length; i++){
+                    console.log("Device Name: ",devices[i].name);
+                    console.log("Device State;",devices[i].status);
+                    
+                }
+                console.log(num_devices);
+            }
+        </script>
+    </head>
+     
+    <body style = "text-align: center;" onload=start()>
+     
+        <h1 style = "color:green;">
+            PROJECTTEAM 26
+        </h1>
+         
+        <h2>
+            Conncected Devices
+        </h2>
+         
+        <label for="freeform2">EnterDevice Name:</label>
+        <br>
+        <textarea id="freeform2" name="freeform2" rows="4" cols="50">
+        </textarea><br><br>
+        </div>
+
+        <button onclick = "add_device()">
+            ADD DEVICE
+        </button>
+         
+        <br><br>
+        
+
+
+        <div id = "GFG"></div>
+        <label for="freeform">Arduino Code Here:</label>
+        <br>
+        <textarea id="freeform" name="freeform" rows="4" cols="50">
+        </textarea><br><br>
+        <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>  
