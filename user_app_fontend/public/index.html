@@ -5,22 +5,36 @@
             Home screen
         </title>
          
-        
+        <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
         <script>
+         // An mqtt variable will be initialized globally
+        console.log(mqtt)
+        </script>
+
+        <script>
+            const mqtt = require('mqtt')
+            const host = '127.0.0.1'
+            const port = '1883'
+            const connectUrl = `mqtt://${host}:${port}`
+            const clientId = "rpi_client2"
+            const client = mqtt.connect(connectUrl, {
+                clientId,
+                clean: true,
+                connectTimeout: 4000,
+                username: 'group26',
+                password: 'group26',
+                reconnectPeriod: 1000,
+            })
+
+            client.on('connect', () => {
+                console.log('Connected')
+            })
+
             devices = [];
             window.setInterval(status_in, 1000)
             num_devices = 0;
             function start(){
-                devices.push({ name: 'abc', status: 'on' });
-                devices.push({ name: 'ghwi', status: 'off' });
-                devices.push({ name: 'gdhi', status: 'off' });
-                devices.push({ name: 'weghi', status: 'off' });
-                devices.push({ name: 'ghisd', status: 'off' });
-                devices.push({ name: 'ghsdis', status: 'on' });
-                devices.push({ name: 'ghi', status: 'off' });
-                devices.push({ name: 'gsdhid', status: 'on' });
-                devices.push({ name: 'ghisd', status: 'off' });
-                devices.push({ name: 'ghisd', status: 'off' });
+                devices.push({ name: 'Plug 1', status: 'on' });
                 for(i = 0; i < devices.length; i++){
 
                     if (10000 > devices.length){
@@ -37,10 +51,25 @@
                         button.id = i;
                         button.addEventListener("click", function() {
                             if(this.status == "off"){
-                                his.status = "on"
+                                this.status = "on"
+                                client.publish('rpi/broadcast', 'on', { qos: 0, retain: false }, function (error) {
+                                    if (error) {
+                                        console.log(error)
+                                    } else {
+                                        console.log('Published')
+                                    }
+                                })
                             }
+
                             else{
                                 this.status = "off"
+                                client.publish('rpi/broadcast', 'off', { qos: 0, retain: false }, function (error) {
+                                    if (error) {
+                                        console.log(error)
+                                    } else {
+                                        console.log('Published')
+                                    }
+                                })
                             }
                             console.log("Device Name: ",this.name);
                             console.log("Device State;",this.status);
