@@ -7,4 +7,12 @@ mqttBroker ="mqtt.eclipseprojects.io"
 mqtt_client = mqtt.Client("API")
 mqtt_client.connect(mqttBroker)
 
+def init():
+    global running_devices
+    running_devices = set()
+    global all_devices
+    all_devices = set()
+
+init()
+
 from . import user_app_backend

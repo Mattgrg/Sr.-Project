@@ -5,3 +5,4 @@ paho-mqtt
 Flask-MQTT
 APScheduler
 Flask-APScheduler
+flask-cors

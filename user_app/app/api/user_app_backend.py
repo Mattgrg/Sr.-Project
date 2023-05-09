@@ -1,16 +1,17 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 import time
 # from flask_mqtt import Mqtt
 import paho.mqtt.client as mqtt
 import bluetooth
 # import requests
 
-from . import backend_api, mqtt_client
+from . import backend_api, mqtt_client, running_devices, all_devices
 # from app.utils.configs import Smart_Hub_API
 
-running_devices = set()
 
 @backend_api.route('/')
+@cross_origin()
 def home():
     return "Home Page"
 
@@ -47,6 +48,7 @@ def device_command_bluetooth():
     return f"Device Turn {command.title()} Success"
 
 @backend_api.route("/device/command", methods = ["POST"])
+@cross_origin()
 def device_command_mqtt():
     comm = request.get_json()
     device, command = list(comm.items())[0]
@@ -57,9 +59,11 @@ def device_command_mqtt():
     return "True"
 
 @backend_api.route("/device/info", methods = ["GET"])
+@cross_origin()
 def device_info():
     dev_info =  {
-                "running_dev" : list(running_devices),
+                "all_dev" : list(all_devices),
+                "running_dev" : list(running_devices)
                 }
     print("Sending", dev_info)
     return dev_info
