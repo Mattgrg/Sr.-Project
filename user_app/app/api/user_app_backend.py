@@ -53,6 +53,11 @@ def device_command_mqtt():
     comm = request.get_json()
     device, command = list(comm.items())[0]
     msg = f"{device} {command}"
+    if command == "DEL":
+        if device in all_devices:
+            all_devices.remove(device)
+        if device in running_devices:
+            running_devices.remove(device)
     print("Recevied Command", comm)
     mqtt_client.publish("device/mqtt_sub", msg)
     print("Command Published (MQTT): ", msg)

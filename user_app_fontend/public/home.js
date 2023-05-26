@@ -29,12 +29,18 @@ function isNumeric(value) {
 
 addBtn.onclick = ()=>{ //when user click on plus icon button
     let input = inputBox.value.trim().split(/\s+/); //getting input field value
-    if (input.length < 2) return;
+    document.querySelector(".inputField input").value = "";
+    if (input.length < 2) {
+        inputBox.placeholder = "input too little arguements"
+        return;
+    }
     input[1] = input[1].toUpperCase();
-    if (input[1] != "ON" && input[1] != "OFF") return;
-    console.log(input[0], input[1]);
+    if (input[1] != "ON" && input[1] != "OFF") {
+        inputBox.placeholder = "input command not valid"
+        return;
+    }
+    inputBox.placeholder = "Send command (format: <devnum> <command>)"
     httpPost(input[0], input[1])
-    return;
 }
 
 function showTasks(queryNum, queryLi, data){
@@ -67,9 +73,11 @@ function showTasks(queryNum, queryLi, data){
 
 function deleteTask(index, type) {
     if (type == 1) {
+        httpPost(devices[index], "DEL");
         devices.splice(index, 1); //delete or remove the li
         showTasks(".connectDev", ".devices", devices); //call the showTasks function
     } else {
+        httpPost(running_devices[index], "OFF");
         running_devices.splice(index, 1); //delete or remove the li
         showTasks(".runningDev", ".running_devices", running_devices); //call the showTasks function
 
@@ -77,10 +85,17 @@ function deleteTask(index, type) {
 }
 
 deleteAllRun.onclick = ()=>{
+    for (let i = 0; i < running_devices.length; i++) {
+        httpPost(running_devices[i], "DEL");
+    }
+
     running_devices = []; //empty the array
     showTasks(".runningDev", ".running_devices", running_devices); //call the showTasks function
 }
 deleteAllConn.onclick = ()=>{
+    for (let i = 0; i < devices.length; i++) {
+        httpPost(devices[i], "DEL");
+    }
     devices = []; //empty the array
     showTasks(".connectDev", ".devices", devices); //call the showTasks function
 }
@@ -89,18 +104,22 @@ function httpGet()
 {
     var theUrl = "http://localhost:5000/device/info"
     var xmlHttp = new XMLHttpRequest();
+    console.log("Sending Out GET request")
     xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
     xmlHttp.send( null );
-    console.log(xmlHttp.responseText);
+    console.log("Server Responded GET: ", xmlHttp.responseText);
     return xmlHttp.responseText;
 }
 
 function get_running()
 {
     var get_ret = JSON.parse(httpGet()); 
-    running_devices = get_ret.running_dev;
-    devices = get_ret.all_dev;
-    showTasks(".connectDev", ".devices", devices); //call the showTasks function
+    if (running_devices != get_ret.running_dev || devices != get_ret.all_dev) {
+        if (running_devices != get_ret.running_dev) running_devices = get_ret.running_dev;
+        if (devices != get_ret.all_dev) devices = get_ret.all_dev;
+        showTasks(".connectDev", ".devices", devices); //call the showTasks function
+        showTasks(".runningDev", ".running_devices", running_devices); //call the showTasks function
+    }
 }
 
 function httpPost(selectDev, comm)
@@ -109,13 +128,14 @@ function httpPost(selectDev, comm)
     info[selectDev] = comm;
     var theUrl = "http://localhost:5000/device/command"
     var xmlHttp = new XMLHttpRequest();
+    console.log("Sending Out POST Command")
     xmlHttp.open( "POST", theUrl, false ); // false for synchronous request
     xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
     var params = JSON.stringify(info)
     console.log(params)
     xmlHttp.send( params );
-    console.log(xmlHttp.responseText);
+    console.log("Server received command: ", xmlHttp.responseText);
     return xmlHttp.responseText;
 }
 

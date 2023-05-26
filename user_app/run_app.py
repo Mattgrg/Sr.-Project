@@ -14,8 +14,8 @@ app.register_blueprint(backend_api)
 
 def on_message(client, userdata, message):
     msg = str(message.payload.decode("utf-8"))
-    dev, stat = msg.split()
-    if (stat == "1"):
+    dev, stat, comm, fault = msg.split()
+    if (comm == "1"):
         running_devices.add(dev)
         all_devices.add(dev)
     else:
